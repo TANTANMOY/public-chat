@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+
+    <main>
+        <div class="jumbotron">
+            <h1>Public-chat</h1>
+        </div>
+
+    </main>
+
+
+    <input type="text" class="message form-control">
+    <button type="button" onclick="sendMessage()" class="btn btn-success mt-3">Send Message</button>
+
+    <div class="jumbotron p-2 mt-2">
+        <p id="messagedata"></p>
+    </div>
+    <script>
+
+        const socket = io('http://localhost:4000')
+        socket.on('connection')
+        socket.on('message', (data) => {
+            document.getElementById("messagedata").innerHTML = data;
+        })
+
+        const sendMessage = () => {
+            const messageInput = document.querySelector('.message')
+            const message = messageInput.value
+            socket.emit('message', message);
+            document.querySelector('.message').value = ""
+        }
+    </script>
+
+    <br><br>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+</html>
